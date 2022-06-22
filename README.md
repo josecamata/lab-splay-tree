@@ -87,6 +87,7 @@ Aplicamos repetidamente rotações em zig-zag e zig-zig a X; cada par de rotaç�
 
 O pai de X, P, é a raiz: giramos X e P para que X se torne a raiz. Isso é chamado de caso "zig".
 
+
 ```
      P             X     
     / \           / \    
@@ -94,4 +95,22 @@ O pai de X, P, é a raiz: giramos X e P para que X se torne a raiz. Isso é cham
   / \ /C\  ==>  /A\ / \  
   ^  ^               ^  ^ 
  /A\/B\     Zig     /B\/C\
+```
+
+A operação *splay* de um nó 
+
+```
+while X is not the root:
+    if X is a child of the root:
+        // ZIG:
+        Rotate about the root to bring X to the root
+    else:
+        P := X.parent
+        G := P.parent  // the grandparent of N
+        if X and P are both left or both right children:
+            // ZIG-ZIG:
+            Rotate about G then about P to bring X up two levels
+        else:
+            // ZIG-ZAG:
+            Rotate about P then about G to bring X up two levels
 ```
