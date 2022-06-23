@@ -43,8 +43,8 @@ class SplayTree
         SplayNode* find(int key);
         void       print_tree();
         void       print_in_order();
-        void rotateLeft(SplayNode *node);
-        void rotateRight(SplayNode *node);
+        SplayNode* rotateLeft(SplayNode *node);
+        SplayNode* rotateRight(SplayNode *node);
         ~SplayTree();
     private:
         // Funções auxiliares

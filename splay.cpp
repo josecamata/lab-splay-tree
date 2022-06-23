@@ -65,11 +65,11 @@ SplayTree::SplayTree(): root(nullptr)
    ^  ^                               ^  ^ 
   /A\/B\                             /B\/C\
   */
-void SplayTree::rotateLeft(SplayNode *x)
+SplayNode* SplayTree::rotateLeft(SplayNode *x)
 {
     SplayNode *y = x->right;
     if(y == nullptr)
-        return;
+        return x;
     x->right = y->left;
     if (y->left != nullptr)
         y->left->parent = x;
@@ -82,6 +82,7 @@ void SplayTree::rotateLeft(SplayNode *x)
         x->parent->right = y;
     y->left = x;
     x->parent = y;   
+    return y;
 }
 
 /*
@@ -94,11 +95,11 @@ void SplayTree::rotateLeft(SplayNode *x)
   /A\/B\         rotate right        /B\/C\
 
 */ 
-void SplayTree::rotateRight(SplayNode *y)
+SplayNode* SplayTree::rotateRight(SplayNode *y)
 {
     SplayNode *x = y->left;
     if(x == nullptr)
-        return;
+        return y;
     y->left = x->right;
     if (x->right != nullptr)
         x->right->parent = y;
@@ -111,13 +112,14 @@ void SplayTree::rotateRight(SplayNode *y)
         y->parent->right = x;  
     x->right = y;
     y->parent = x;
+    return x;
 }
 
 // Implemente a rotina de splay. 
 // O parâmetro node é o nó que deve ser splayado.
 void SplayTree::splay(SplayNode *node)
 {
-    
+    //
 }
 
 SplayNode* SplayTree::find(int key)
@@ -186,7 +188,8 @@ SplayNode* SplayTree::min()
 void SplayTree::remove(int key)
 {
      // TODO: Verifique a implementação da rotina de remoção
-     SplayNode *node = find(key);
+     
+    SplayNode *node = find(key);
     if (node == nullptr)
             return;
 
