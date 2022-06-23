@@ -52,14 +52,24 @@ Quando elevamos um nó X até a raiz da árvore, existem três casos que determi
 X é o filho direito de um filho esquerdo (ou o filho esquerdo de um filho direito): seja P o pai de X e seja G o avô de X.
 Primeiro giramos X e P para a esquerda e depois giramos X e G para a direita, conforme ilustrado à direita. A imagem espelhada deste caso - onde X é um filho à esquerda e P é um filho à direita - usa as mesmas rotações na imagem espelhada: gire X e P para a direita, depois X e G para a esquerda. Tanto o caso ilustrado acima quanto sua imagem espelhada são chamados de caso "zig-zag".
 ```
-      G               G               X     
-     / \             / \             / \    
-    P   ^           X   ^           P   G   
-   / \ /D\  ==>    / \ /D\  ==>    / \ / \  
-   ^  X            P  ^            ^  ^ ^  ^ 
-  /A\/ \          / \/C\          /A\/BVC\/D\
-     ^  ^        ^  ^                        
-    /B\/C\      /A\/B\     Zig-Zag
+Zag-Zig (Left Right Case):
+       G                        G                            X       
+      / \                     /   \                        /   \      
+     P   T4  leftRotate(P)   X     T4    rightRotate(G)   P     G     
+   /  \      ============>  / \          ============>   / \   /  \    
+  T1   X                   P  T3                       T1  T2 T3  T4 
+      / \                 / \                                       
+    T2  T3              T1   T2                                     
+
+Zig-Zag (Right Left Case):
+  G                          G                           X       
+ /  \                      /  \                        /   \      
+T1   P    rightRotate(P)  T1   X     leftRotate(G)    G     P
+    / \   =============>      / \    ============>   / \   / \   
+   X  T4                    T2   P                 T1  T2 T3  T4
+  / \                           / \                
+ T2  T3                        T3  T4  
+
 ```
 
 A imagem espelhada deste caso - onde X é um filho à esquerda e P é um filho à direita - usa as mesmas rotações na imagem espelhada: gire X e P para a direita, depois X e G para a esquerda. Tanto o caso ilustrado acima quanto sua imagem espelhada são chamados de caso "zig-zag".
@@ -68,14 +78,24 @@ A imagem espelhada deste caso - onde X é um filho à esquerda e P é um filho �
 
 X é o filho esquerdo de um filho esquerdo (ou o filho direito de um filho direito): a ORDEM das rotações é INVERTIDA do caso 1. Começamos com o avô e giramos G e P para a direita. Então, giramos P e X para a direita.
 ```
-      G               P               X       
-     / \             / \             / \      
-    P   ^           X   G           ^   P     
-   / \ /D\  ==>    / \ / \    ==>  /A\ / \    
-   X  ^            ^  ^ ^  ^            ^  G   
-  / \/C\          /A\/BVC\/D\          /B\/ \  
-  ^  ^                                     ^  ^ 
- /A\/B\                       Zig-Zig     /C\/D\
+Zig-Zig (Left Left Case):
+       G                        P                           X       
+      / \                     /   \                        / \      
+     P  T4   rightRotate(G)  X     G     rightRotate(P)  T1   P     
+    / \      ============>  / \   / \    ============>       / \    
+   X  T3                   T1 T2 T3 T4                      T2  G
+  / \                                                          / \ 
+ T1 T2                                                        T3  T4 
+
+Zag-Zag (Right Right Case):
+  G                          P                           X       
+ /  \                      /   \                        / \      
+T1   P     leftRotate(G)  G     X     leftRotate(P)    P   T4
+    / \    ============> / \   / \    ============>   / \   
+   T2   X               T1 T2 T3 T4                  G   T3
+       / \                                          / \ 
+      T3 T4                                        T1  T2
+
 ```
 
 A imagem espelhada deste caso - onde X e P são ambos filhos à direita - usa as mesmas rotações na imagem espelhada: gire G e P para a esquerda, depois P e X para a esquerda. Tanto o caso ilustrado acima quanto sua imagem espelhada são chamados de caso "zig-zig".
@@ -84,15 +104,14 @@ Aplicamos repetidamente rotações em zig-zag e zig-zig a X; cada par de rotaç�
 
 **Caso 3: Rotação zig**
 
-O pai de X, P, é a raiz: giramos X e P para que X se torne a raiz. Isso é chamado de caso "zig".
+O pai de X, Y é a raiz: giramos X e Y para que X se torne a raiz. Isso é chamado de caso "zig". O espelho é chamado de zag.
 
 ```
-     P             X     
-    / \           / \    
-   X   ^         ^   P   
-  / \ /C\  ==>  /A\ / \  
-  ^  ^               ^  ^ 
- /A\/B\     Zig     /B\/C\
+                y                                     x
+               / \     Zig (Right Rotation)          /  \
+              x   T3   – - – - – - – - - ->         T1   y 
+             / \       < - - - - - - - - -              / \
+            T1  T2     Zag (Left Rotation)            T2   T3
 ```
 
 A operação *splay* de um nó é sumarizado a seguir:
