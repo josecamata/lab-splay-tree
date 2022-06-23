@@ -52,160 +52,160 @@ void SplayNode::setKey(int key)
    Implement the SplayNode class
 */
 
+// Cria um SplayTree vazia
 SplayTree::SplayTree(): root(nullptr)
 { }
 
-void SplayTree::rotateLeft(SplayNode *X)
-{
-    SplayNode *Y = X->parent;
-    SplayNode *right  = node->getRight();
-    if (parent != nullptr)
-    {
-        if (parent->getLeft() == node)
-        {
-            parent->setLeft(right);
-        }
-        else
-        {
-            parent->setRight(right);
-        }
-    }
-    else
-    {
-        root = right;
-    }
-    right->setParent(parent);
-    node->setRight(right->getLeft());
-    if (node->getRight() != nullptr)
-    {
-        node->getRight()->setParent(node);
-    }
-    right->setLeft(node);
-    node->setParent(right);
-}
-
+// Implementação da rotina de Rotação à Esquerda
 /*
        Y                             X     
       / \        rotate left        / \    
      X   ^      <------------      ^   Y   
     / \ /C\                       /A\ / \  
+   ^  ^                               ^  ^ 
+  /A\/B\                             /B\/C\
+  */
+void SplayTree::rotateLeft(SplayNode *x)
+{
+    SplayNode *y = x->right;
+    x->right = y->left;
+    if (y->left != nullptr)
+        y->left->parent = x;
+    y->parent = x->parent;
+    if (x->parent == nullptr)
+        root = y;
+    else if (x == x->parent->left)
+        x->parent->left = y;
+    else
+        x->parent->right = y;
+    y->left = x;
+    x->parent = y;   
+}
+
+/*
+    Implementação da rotina de Rotação à Direita
+       Y                             X     
+      / \                           / \    
+     X   ^                         ^   Y   
+    / \ /C\                       /A\ / \  
    ^  ^         ------------>         ^  ^ 
   /A\/B\         rotate right        /B\/C\
 
-*/
-
-    
-void SplayTree::rotateRight(SplayNode *Y)
+*/ 
+void SplayTree::rotateRight(SplayNode *y)
 {
-    SplayNode *X    = Y->left;
-    Y->left   = X->right;
-    X->right  = Y; 
-    Y->parent = X;
-    // return X;
+    SplayNode *x = y->left;
+    y->left = x->right;
+    if (x->right != nullptr)
+        x->right->parent = y;
+    x->parent = y->parent;
+    if (y->parent == nullptr)
+        root = x;
+    else if (y == y->parent->left)
+        y->parent->left = x;
+    else
+        y->parent->right = x;  
+    x->right = y;
+    y->parent = x;
 }
 
+// Implemente a rotina de splay. 
+// O parâmetro node é o nó que deve ser splayado.
 void SplayTree::splay(SplayNode *node)
 {
-    /*
-    while (node->getParent() != nullptr)
-    {
-        SplayNode *parent = node->getParent();
-        SplayNode *grandparent = parent->getParent();
-        if (grandparent == nullptr)
-        {
-            if (parent->getLeft() == node)
-            {
-                rotateRight(parent);
-            }
-            else
-            {
-                rotateLeft(parent);
-            }
-        }
-        else
-        {
-            if (grandparent->getLeft() == parent)
-            {
-                if (parent->getLeft() == node)
-                {
-                    rotateRight(grandparent);
-                    rotateRight(parent);
-                }
-                else
-                {
-                    rotateLeft(grandparent);
-                    rotateRight(parent);
-                }
-            }
-            else
-            {
-                if (parent->getLeft() == node)
-                {
-                    rotateRight(grandparent);
-                    rotateLeft(parent);
-                }
-                else
-                {
-                    rotateLeft(grandparent);
-                    rotateLeft(parent);
-                }
-            }
-        }
-    }
-    */
+    
 }
 
 SplayNode* SplayTree::find(int key)
 {
-    SplayNode* parent = nullptr;
     SplayNode *node = root;
-    while (node != nullptr)
+    SplayNode *parent = nullptr;
+    while (node != nullptr && node->key != key)
     {
-        parent = node->getParent();
-        if (node->getKey() == key)
-        {
-            splay(node);
-            return node;
-        }
-        else if (node->getKey() > key)
-        {
-            node = node->getLeft();
-        }
+        parent = node;
+        if (key < node->key)
+            node = node->left;
         else
-        {
-            node = node->getRight();
-        }
+            node = node->right;
     }
-    splay(parent);
-    return parent;
+    // TODO: chame a rotina de splay para o no encontrado a raiz. 
+    //       Se no for null, eleve o pai.
+    return node;
 }
 
 void SplayTree::insert(int key)
 {
     SplayNode *node = new SplayNode(key);
-    if (root == nullptr)
+    SplayNode *x    = root;
+    SplayNode *y    = nullptr;
+    while(x != nullptr)
     {
-        root = node;
-    }
-    else
-    {
-        SplayNode *parent = find(key);
-        if (parent->getKey() > key)
-        {
-            parent->setLeft(node);
-        }
+        y = x;
+        if (key < x->key)
+            x = x->left;
         else
-        {
-            parent->setRight(node);
-        }
-        node->setParent(parent);
+            x = x->right;
     }
+    node->parent = y;
+    if (y == nullptr)
+        root = node;
+    else if (key < y->key)
+        y->left = node;
+    else
+        y->right = node;
+
+    // TODO: chame a rotina de splay para elevar o node ao nível da raiz
+}
+
+// Retorna o nó que contem a maior chave
+SplayNode* SplayTree::max()
+{
+    SplayNode *node = root;
+    if(node == nullptr)
+        return nullptr;
+    while (node->right != nullptr)
+        node = node->right;
+    return node;
+}
+
+// Retorna o nó que contem a menor chave
+SplayNode* SplayTree::min()
+{
+    SplayNode *node = root;
+    if(node == nullptr)
+        return nullptr;
+    while (node->left != nullptr)
+        node = node->left;
+    return node;
 }
 
 void SplayTree::remove(int key)
 {
-     //TODO: 
+     // TODO: Verifique a implementação da rotina de remoção
+     SplayNode *node = find(key);
+    if (node == nullptr)
+            return;
 
+    if(node->key != key)
+        return;
+    
+   SplayNode* r1 = node->left;
+   SplayNode* r2 = node->right;
+   if(r1 == nullptr)
+        root = r2;
+    else
+    {
+
+        while(r1->right != nullptr)
+            r1 = r1->right;
+
+        splay(r1);
+        r1->right = r2;
+        if(r2 != nullptr)
+            r2->parent = r1;
+        root = r1;
+    }
+    delete node;
 }
 
 void SplayTree::print(SplayNode* node, const std::string& prefix, bool isLeft, std::ostream& out)
@@ -226,12 +226,6 @@ void SplayTree::print(SplayNode* node, const std::string& prefix, bool isLeft, s
 void SplayTree::print()
 {
     print(root, "", true, std::cout);
-}
-
-SplayNode::~SplayNode()
-{
-    delete left;
-    delete right;
 }
 
 void SplayTree::deallocateMemory(SplayNode *node)

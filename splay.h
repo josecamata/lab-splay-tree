@@ -4,7 +4,10 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
 class SplayTree;
+
+// Implementa as estruturas de dados necessarias para o splay tree
 
 class SplayNode
 {
@@ -30,22 +33,27 @@ class SplayNode
 
 class SplayTree
 {   
-   
+
     public:
-        SplayTree(): root(nullptr) {}
+        SplayTree();
         void       insert(int key);
         void       remove(int key);
+        SplayNode*  max();
+        SplayNode*  min();
         SplayNode* find(int key);
         void       print();
         ~SplayTree();
     private:
+        // Funções auxiliares
         void print(SplayNode* node, const std::string& prefix, bool isLeft, std::ostream& out);
         void rotateLeft(SplayNode *node);
         void rotateRight(SplayNode *node);
         void splay(SplayNode *node);
         void deallocateMemory(SplayNode *node);
+
+        // Ponteiro para o no raiz da arvore
         SplayNode *root;
-}
+};
 
 
 #endif /* SPLAY_H__ */
