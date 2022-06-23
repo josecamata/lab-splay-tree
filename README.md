@@ -29,10 +29,10 @@ aplicação podemos citar:
 Como muitos tipos de árvores de busca balanceadas, as árvores de splay são mantidas balanceadas com a ajuda de mudanças estruturais chamadas *rotações*. Existem dois tipos - uma rotação à esquerda e uma rotação à direita - e cada um é o inverso do outro. Suponha que X e Y sejam nós de árvore binária, e T1, T2 e T3 são subárvores. Uma rotação transforma qualquer uma das configurações ilustradas abaixo na outra. Observe que a invariante da árvore de busca binária é preservada: as chaves em T1 são menores ou iguais a X; chaves em T3 são maiores ou iguais a Y; e as chaves em T2 são >= X e <= Y.
 ```
                 y                                     x
-               / \     Zig (Right Rotation)          /  \
+               / \         (Right Rotation)          /  \
               x   T3   – - – - – - – - - ->         T1   y 
              / \       < - - - - - - - - -              / \
-            T1  T2     Zag (Left Rotation)            T2   T3
+            T1  T2          (Left Rotation)            T2   T3
 ```
 
 ## Operações
