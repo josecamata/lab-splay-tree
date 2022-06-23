@@ -41,13 +41,16 @@ class SplayTree
         SplayNode*  max();
         SplayNode*  min();
         SplayNode* find(int key);
-        void       print();
+        void       print_tree();
+        void       print_in_order();
+        void rotateLeft(SplayNode *node);
+        void rotateRight(SplayNode *node);
         ~SplayTree();
     private:
         // Funções auxiliares
-        void print(SplayNode* node, const std::string& prefix, bool isLeft, std::ostream& out);
-        void rotateLeft(SplayNode *node);
-        void rotateRight(SplayNode *node);
+        void print_tree(SplayNode* node, const std::string& prefix, bool isLeft, std::ostream& out);
+        void print_in_order(SplayNode* node, std::ostream& out);
+
         void splay(SplayNode *node);
         void deallocateMemory(SplayNode *node);
 

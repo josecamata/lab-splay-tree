@@ -68,6 +68,8 @@ SplayTree::SplayTree(): root(nullptr)
 void SplayTree::rotateLeft(SplayNode *x)
 {
     SplayNode *y = x->right;
+    if(y == nullptr)
+        return;
     x->right = y->left;
     if (y->left != nullptr)
         y->left->parent = x;
@@ -95,6 +97,8 @@ void SplayTree::rotateLeft(SplayNode *x)
 void SplayTree::rotateRight(SplayNode *y)
 {
     SplayNode *x = y->left;
+    if(x == nullptr)
+        return;
     y->left = x->right;
     if (x->right != nullptr)
         x->right->parent = y;
@@ -208,7 +212,7 @@ void SplayTree::remove(int key)
     delete node;
 }
 
-void SplayTree::print(SplayNode* node, const std::string& prefix, bool isLeft, std::ostream& out)
+void SplayTree::print_tree(SplayNode* node, const std::string& prefix, bool isLeft, std::ostream& out)
 {
     if(node == nullptr)
         return;
@@ -219,13 +223,30 @@ void SplayTree::print(SplayNode* node, const std::string& prefix, bool isLeft, s
     // print the value of the node
     out <<"["<<node->getKey()<<"]" << std::endl;
 
-    print(node->getLeft() , prefix + (isLeft ? "│   " : "    "), true, out);
-    print(node->getRight(), prefix + (isLeft ? "│   " : "    "), false, out);
+    print_tree(node->getLeft() , prefix + (isLeft ? "│   " : "    "), true, out);
+    print_tree(node->getRight(), prefix + (isLeft ? "│   " : "    "), false, out);
 }
 
-void SplayTree::print()
+void SplayTree::print_in_order(SplayNode* node, std::ostream& out)
 {
-    print(root, "", true, std::cout);
+    if(node == nullptr)
+        return;
+    print_in_order(node->left, out);
+    out << node->key << " ";
+    print_in_order(node->right, out);
+}
+
+
+void SplayTree::print_in_order()
+{
+    print_in_order(root, std::cout);
+    std::cout << std::endl;
+}
+
+void SplayTree::print_tree()
+{
+    print_tree(root, "", true, std::cout);
+    std::cout << std::endl;
 }
 
 void SplayTree::deallocateMemory(SplayNode *node)
