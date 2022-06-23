@@ -143,12 +143,12 @@ A operação de inserção na árvore do Splay é realizada seguindo os seguinte
 ### Remove(k)
 
 Para excluir um nó em uma *splay tree*, devemos seguir as seguintes etapas:
-- Elevamos esse nó até a raiz.
-- Apontamos as subarvores a esquerda e a direita, em R1 e R2
-- Deletamos o nó
-- Se R1 for nullptr, a nova raiz será R2
+- Elevamos esse nó com a chave k até a raiz.
+- Apontamos as subarvores a esquerda e a direita, para as variáveis R1 e R2, respectivamente
+- Deleta o nó com a chave k
+- Se R1 for nullptr, a nova raiz da *splay tree* será R2
 - Caso contrário:
-  - obtemos o nó de maior chave do filho a esquerda de R1
+  - Obtem-se o nó de maior chave de R1
   - Eleva-se esse nó para raiz de R1
-  - Faz o filho a direita de R1 ser R2, e R1 raiz da SplayTree
+  - Faz o filho a direita de R1 ser R2, e R1 raiz da *splay tree*
 
