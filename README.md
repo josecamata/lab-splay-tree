@@ -44,7 +44,7 @@ A operação find(k) em uma árvore splay começa exatamente como a operação f
 
 No entanto, uma árvore splay não termina seu trabalho aqui. Seja X o nó onde a busca terminou, contendo ou não a chave k. Nós elevaremos (*play*) o nó X na árvore através de uma sequência de rotações, de modo que X se torne a raiz da árvore. Por quê? Uma razão é que as entradas acessadas recentemente estão próximas à raiz da árvore e, se acessarmos as mesmas poucas entradas repetidamente, os acessos serão muito rápidos. Outra razão é porque se X estiver profundamente abaixo de um ramidicação desequilibrada da árvore, a operação de splay melhorará o equilíbrio ao longo desse ramo.
 
-#### Splay(X)
+### Splay(X)
 
 Quando elevamos um nó X até a raiz da árvore, existem três casos que determinam as rotações que usamos. A saber:
 
@@ -87,7 +87,6 @@ Aplicamos repetidamente rotações em zig-zag e zig-zig a X; cada par de rotaç�
 
 O pai de X, P, é a raiz: giramos X e P para que X se torne a raiz. Isso é chamado de caso "zig".
 
-
 ```
      P             X     
     / \           / \    
@@ -97,7 +96,7 @@ O pai de X, P, é a raiz: giramos X e P para que X se torne a raiz. Isso é cham
  /A\/B\     Zig     /B\/C\
 ```
 
-A operação *splay* de um nó 
+A operação *splay* de um nó é sumarizado a seguir:
 
 ```
 while X is not the root:
@@ -114,3 +113,13 @@ while X is not the root:
             // ZIG-ZAG:
             Rotate about P then about G to bring X up two levels
 ```
+### Insert(k)
+
+A operação de inserção na árvore do Splay é realizada seguindo os seguintes passos...
+
+ - Passo 1: Verifique se a árvore está vazia.
+ - Passo 2: Se a árvore estiver vazia, insira o *newNode* como nó Raiz e saia da operação.
+ - Passo 3: Se a árvore não estiver vazia, insira o *newNode* como nó folha usando a lógica de inserção da árvore de pesquisa binária.
+ - Passo 4: Após a inserção, *splay* o *newNode*
+ -
+### Remove(k)
