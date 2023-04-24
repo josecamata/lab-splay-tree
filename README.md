@@ -8,7 +8,7 @@ Nesta atividade implementaremos as principais operações que envolve uma SplayT
 ## O que deve ser feito:
 - Ler o material [splay](splay.md)
 - Analisar os códigos-fontes [splay.h](splay.h) e [splay_node.h](splay_node.h) que implementam uma árvore de busca binária splay.
-- Implementar as rotinas de de rotação a direira e splay.
+- Implementar as rotinas de de rotação a direita e splay.
 - Testar as rotinas implementadas na [main.cpp](main.cpp).
 
 
