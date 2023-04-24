@@ -21,6 +21,9 @@ int main()
         splayTree.print_tree();
 
     }
+    
+     if(splayTree.is_empty())
+         return -1;
 
     std::cout << "Tree after splaying 20" << std::endl;
     // Busca por um nó  
