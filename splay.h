@@ -14,8 +14,10 @@ class SplayTree
         SplayNode<T>*  max();
         SplayNode<T>*  min();
         SplayNode<T>*  find(T key);
-        void       print_tree();
-        void       print_in_order();
+        void           print_tree();
+        void           print_in_order();
+        bool           is_empty(){return root == nullptr;};
+        T              get_root_key(){ return root->key;}
         SplayNode<T>* rotateLeft(SplayNode<T> *node);
         SplayNode<T>* rotateRight(SplayNode<T> *node);
         ~SplayTree();
@@ -84,21 +86,10 @@ SplayNode<T>* SplayTree<T>::rotateLeft(SplayNode<T> *x)
 template <typename T>
 SplayNode<T>* SplayTree<T>::rotateRight(SplayNode<T> *y)
 {
-    SplayNode<T> *x = y->left;
-    if(x == nullptr)
-        return y;
-    y->left = x->right;
-    if (x->right != nullptr)
-        x->right->parent = y;
-    x->parent = y->parent;
-    if (y->parent == nullptr)
-        root = x;
-    else if (y == y->parent->left)
-        y->parent->left = x;
-    else
-        y->parent->right = x;  
-    x->right = y;
-    y->parent = x;
+    //TODO: Implemente a rotação à direita
+    SplayNode<T> *x;
+
+
     return x;
 }
 
@@ -125,17 +116,18 @@ void SplayTree<T>::splay(SplayNode<T> *x)
 
    while(x != this->root)
    {
-        //
+        
         // Se X é filho a esquerda da raiz
-        if(x == this->root->left) {
+        if(x == this->root->left) 
+        {
             // Zig Direita
             x = this->rotateRight(root);
             this->root = x;
 
         } // Se X é filho a direita da raiz
         else if(x == this->root->right)
-       
         {
+                // Zig Esquerda
                 x = this->rotateLeft(root);
                 this->root = x;
         }
@@ -147,34 +139,39 @@ void SplayTree<T>::splay(SplayNode<T> *x)
             // X é filho a direita de P e P é filho a direita de G
             if( (x == P->left && P == G->left) || (x == P->right && P == G->right) )
             {
-                // Zig-Zig 
+    
+                
                 if(x == P->left)
                 {
+                    //Zig-Zig (Left Left Case):
                     // TODO: Rotacionar G para a direita e P para a direita
-
-
+                   
 
                 }
+                
                 else
                 {
+                    // Zig-Zig (Right Right Case)
                     // TODO: Rotacionar G para a esquerda e P para a esquerda
-      
-
+                   
 
                 }
             }
             else
             {
-                // Zig-Zag
+                
                 if(x == P->left)
                 {
+                    // Zag-Zig (Left Right Case)
                     // TODO: Rotacionar P para a direita e G para a esquerda
-             
+                 
                 }
+                
                 else
                 {
+                    // Zag-Zig (Right Left Case)
                     // TODO: Rotacionar P para a esquerda e G para a direita
-                    
+
 
                 }
             }
@@ -231,7 +228,7 @@ void SplayTree<T>::insert(T key)
     else
         y->right = node;
 
-    // TODO: chame a rotina de splay para elevar o node ao nível da raiz
+    
     this->splay(node);
 
 }
