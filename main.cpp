@@ -33,6 +33,10 @@ int main()
     // Imprime a arvore
     splayTree.print_tree();
 
+    if(!splayTree.is_empty())
+        if(splayTree.get_root_key() != 20)
+            return -1;
+
     // Busca por um nó   
     std::cout << "Tree after splaying 5" << std::endl;
     node = splayTree.find(5);
@@ -42,8 +46,11 @@ int main()
         return 0;
     }
 
-    // Imprime a arvore
-    splayTree.print_in_order();
+    splayTree.print_tree();
+
+    if(!splayTree.is_empty())
+        if(splayTree.get_root_key() != 5)
+            return -1;
 
 
     // Remove um nó
@@ -52,6 +59,10 @@ int main()
     std::cout << "Tree after removing 15" << std::endl;
     splayTree.print_tree();
 
+
+    // Imprime a arvore
+    std::cout << "Tree in order" << std::endl;
+    splayTree.print_in_order();
 
     return 0;
 }
