@@ -8,55 +8,50 @@ using namespace std;
 // Testa algumas funções da arvore de busca.
 int main()
 {
+    int array[] = {10, 20, 30, 5, 15};
+    int size = sizeof(array)/sizeof(array[0]);
+
     // Cria um SplayTree vazia
-    SplayTree splayTree;
+    SplayTree<int> splayTree;
 
-    // Insere alguns elementos
-    splayTree.insert(10);
-    splayTree.insert(20);
-    splayTree.insert(30);
-    //splayTree.insert(5);
-    //splayTree.insert(15);
-    //splayTree.insert(25);
-    //splayTree.insert(35);
-    //splayTree.insert(1);
+    for(int i = 0; i < size; i++) {
+        std::cout << "Inserting " << array[i] << std::endl;
+        splayTree.insert(array[i]);
+        std::cout << "Tree after inserting " << array[i] << std::endl;
+        splayTree.print_tree();
 
-    // Imprime a arvore
-    splayTree.print_tree();
+    }
 
+    std::cout << "Tree after splaying 20" << std::endl;
     // Busca por um nó  
-    SplayNode* node = splayTree.find(20);
+    auto node = splayTree.find(20);
     if (node == nullptr)
     {
         cout << "Node not found" << endl;
         return 0;
     }
-    
-    // Aplica rotação a direita
-    SplayNode* r = splayTree.rotateLeft(node);
-    cout <<" r->key = " << r->getKey() << endl;
-    if(r->getParent() != nullptr)
-        cout << "Rotate left: " << r->getKey() << " " << r->getParent()->getKey() << endl;
-        
     // Imprime a arvore
     splayTree.print_tree();
 
-    // Busca por um nó  
-    /*
+    // Busca por um nó   
+    std::cout << "Tree after splaying 5" << std::endl;
     node = splayTree.find(5);
     if (node == nullptr)
     {
         cout << "Node not found" << endl;
         return 0;
     }
-    */
 
-    //Aplica rotação a direita
-    //splayTree.rotateLeft(node);
-        
     // Imprime a arvore
-    //splayTree.print_tree();
     splayTree.print_in_order();
+
+
+    // Remove um nó
+    splayTree.remove(15);
+
+    std::cout << "Tree after removing 15" << std::endl;
+    splayTree.print_tree();
+
 
     return 0;
 }
