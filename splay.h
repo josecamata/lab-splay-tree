@@ -18,14 +18,14 @@ class SplayTree
         void           print_in_order();
         bool           is_empty(){return root == nullptr;};
         T              get_root_key(){ return root->key;}
-        SplayNode<T>* rotateLeft(SplayNode<T> *node);
-        SplayNode<T>* rotateRight(SplayNode<T> *node);
         ~SplayTree();
     private:
         // Funções auxiliares
         void print_tree(SplayNode<T>* node, const std::string& prefix, bool isLeft, std::ostream& out);
         void print_in_order(SplayNode<T>* node, std::ostream& out);
 
+        void rotateLeft(SplayNode<T> *node);
+        void rotateRight(SplayNode<T> *node);
         void splay(SplayNode<T> *node);
         void clean(SplayNode<T> *node);
 
@@ -53,11 +53,11 @@ SplayTree<T>::SplayTree(): root(nullptr)
   */
  
 template <typename T>
-SplayNode<T>* SplayTree<T>::rotateLeft(SplayNode<T> *x)
+void SplayTree<T>::rotateLeft(SplayNode<T> *x)
 {
     SplayNode<T> *y = x->right;
     if(y == nullptr)
-        return x;
+        return;
     x->right = y->left;
     if (y->left != nullptr)
         y->left->parent = x;
@@ -70,7 +70,7 @@ SplayNode<T>* SplayTree<T>::rotateLeft(SplayNode<T> *x)
         x->parent->right = y;
     y->left = x;
     x->parent = y;   
-    return y;
+   
 }
 
 /*
@@ -84,13 +84,25 @@ SplayNode<T>* SplayTree<T>::rotateLeft(SplayNode<T> *x)
 
 */ 
 template <typename T>
-SplayNode<T>* SplayTree<T>::rotateRight(SplayNode<T> *y)
+void SplayTree<T>::rotateRight(SplayNode<T> *y)
 {
     //TODO: Implemente a rotação à direita
-    SplayNode<T> *x;
+    SplayNode<T> *x = y->left;
+    if(x == nullptr)
+        return;
+    y->left = x->right;
+    if (x->right != nullptr)
+        x->right->parent = y;
+    x->parent = y->parent;
+    if (y->parent == nullptr)
+        root = x;
+    else if (y == y->parent->left)
+        y->parent->left = x;
+    else
+        y->parent->right = x;
+    x->right = y;
+    y->parent = x;
 
-
-    return x;
 }
 
 // Implemente a rotina de splay. 
@@ -99,87 +111,31 @@ template <typename T>
 void SplayTree<T>::splay(SplayNode<T> *x)
 {
     /*
-    while X is not the root:
-    if X is a child of the root:
-        // ZIG:
-        Rotate about the root to bring X to the root
-    else:
-        P := X.parent
-        G := P.parent  // the grandparent of N
-        if X and P are both left or both right children:
-            // ZIG-ZIG:
-            Rotate about G then about P to bring X up two levels
-        else:
-            // ZIG-ZAG:
-            Rotate about P then about G to bring X up two levels
+    Enquanto X não é raiz:
+    Se X for o filho raiz,
+        Se filho direito, realizamos a rotação à esquerda ao redor da raiz
+        Caso contrário, a rotação a direita é executada .
+    Caso Contrário:
+        P := X.parent // Pai do no X
+        G := P.parent // Avô do no X 
+        if X e P são ambos filhos a esquerta or ambos filhos a direita:
+            Se o X for esquerta do pai e o pai também for esquerda de seu pai
+               Rotacionar G para a direita e P para a direita: zig-zig
+            caso contrário:
+               Rotacionar G para a esquerda e P para a esquerda: zig-zig
+        Caso Contrário:
+            Se X for filho a esquerda e P for filho a direita
+               Rotacionar P para a esquerda e X para a direita: zig-zag
+            Caso contrário:
+               Rotacionar P para a direita e X para a esquerda: zig-zag
+
     */
-
-   while(x != this->root)
-   {
-        
-        // Se X é filho a esquerda da raiz
-        if(x == this->root->left) 
-        {
-            // Zig Direita
-            x = this->rotateRight(root);
-            this->root = x;
-
-        } // Se X é filho a direita da raiz
-        else if(x == this->root->right)
-        {
-                // Zig Esquerda
-                x = this->rotateLeft(root);
-                this->root = x;
-        }
-        else
-        {
-            SplayNode<T> *P = x->parent;
-            SplayNode<T> *G = P->parent;
-            // X é filho a esquerda de P e P é filho a esquerda de G ou
-            // X é filho a direita de P e P é filho a direita de G
-            if( (x == P->left && P == G->left) || (x == P->right && P == G->right) )
-            {
-    
-                
-                if(x == P->left)
-                {
-                    //Zig-Zig (Left Left Case):
-                    // TODO: Rotacionar G para a direita e P para a direita
-                   
-
-                }
-                
-                else
-                {
-                    // Zig-Zig (Right Right Case)
-                    // TODO: Rotacionar G para a esquerda e P para a esquerda
-                   
-
-                }
-            }
-            else
-            {
-                
-                if(x == P->left)
-                {
-                    // Zag-Zig (Left Right Case)
-                    // TODO: Rotacionar P para a direita e G para a esquerda
-                 
-                }
-                
-                else
-                {
-                    // Zag-Zig (Right Left Case)
-                    // TODO: Rotacionar P para a esquerda e G para a direita
-
-
-                }
-            }
-
-        }
-
-   }
+    //TODO: Implemente a rotina de splay
+    //      O parâmetro node é o nó que deve ser splayado.
+    //     
  
+
+    // fim da implementação da rotina de splay
 }
 
 template <typename T>
