@@ -120,15 +120,14 @@ void SplayTree<T>::splay(SplayNode<T> *x)
         G := P.parent // Avô do no X 
         if X e P são ambos filhos a esquerta or ambos filhos a direita:
             Se o X for esquerta do pai e o pai também for esquerda de seu pai
-               Rotacionar G para a direita e P para a direita: zig-zig
+               Rotacionar G para a direita e P para a direita: zig-zig Direita
             caso contrário:
-               Rotacionar G para a esquerda e P para a esquerda: zig-zig
+               Rotacionar G para a esquerda e P para a esquerda: zig-zig Esquerda
         Caso Contrário:
             Se X for filho a esquerda e P for filho a direita
-               Rotacionar P para a esquerda e X para a direita: zig-zag
+               Rotacionar P para a direita e G para a esquerda: zig-zag Direita - Esquerda
             Caso contrário:
-               Rotacionar P para a direita e X para a esquerda: zig-zag
-
+               Rotacionar P para a esquerda e G para a direita: zig-zag Esquerta - Direita
     */
     //TODO: Implemente a rotina de splay
     //      O parâmetro node é o nó que deve ser splayado.
