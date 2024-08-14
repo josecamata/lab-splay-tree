@@ -87,21 +87,7 @@ template <typename T>
 void SplayTree<T>::rotateRight(SplayNode<T> *y)
 {
     //TODO: Implemente a rotação à direita
-    SplayNode<T> *x = y->left;
-    if(x == nullptr)
-        return;
-    y->left = x->right;
-    if (x->right != nullptr)
-        x->right->parent = y;
-    x->parent = y->parent;
-    if (y->parent == nullptr)
-        root = x;
-    else if (y == y->parent->left)
-        y->parent->left = x;
-    else
-        y->parent->right = x;
-    x->right = y;
-    y->parent = x;
+    // Use a rotação à esquerda como exemplo
 
 }
 
@@ -129,14 +115,10 @@ void SplayTree<T>::splay(SplayNode<T> *x)
             Caso contrário:
                Rotacionar P para a esquerda e G para a direita: zig-zag Esquerta - Direita
     */
-    //TODO: Implemente a rotina de splay
-    //      O parâmetro node é o nó que deve ser splayado.
-    //     
- 
 
-    // fim da implementação da rotina de splay
 }
 
+// Implemente a rotina de busca
 template <typename T>
 SplayNode<T>* SplayTree<T>::find(T key)
 {
@@ -161,6 +143,7 @@ SplayNode<T>* SplayTree<T>::find(T key)
     return node;
 }
 
+// Implemente a rotina de inserção
 template <typename T>
 void SplayTree<T>::insert(T key)
 {
@@ -182,8 +165,6 @@ void SplayTree<T>::insert(T key)
         y->left = node;
     else
         y->right = node;
-
-    
     this->splay(node);
 
 }
@@ -215,32 +196,22 @@ SplayNode<T>* SplayTree<T>::min()
 template <typename T>
 void SplayTree<T>::remove(T key)
 {
-     // TODO: Verifique a implementação da rotina de remoção
-     
-    SplayNode<T> *node = find(key);
-    if (node == nullptr)
-            return;
-
-    if(node->key != key)
-        return;
-    
-   SplayNode<T>* r1 = node->left;
-   SplayNode<T>* r2 = node->right;
-   if(r1 == nullptr)
-        root = r2;
-    else
-    {
-
-        while(r1->right != nullptr)
-            r1 = r1->right;
-
-        splay(r1);
-        r1->right = r2;
-        if(r2 != nullptr)
-            r2->parent = r1;
-        root = r1;
-    }
-    delete node;
+    //TODO: Implemente a rotina de remoção seguindo os passos abaixo:
+    /* 
+    Se Root for NULL: simplesmente retornamos a raiz.
+    Caso contrário, 
+        Se k estiver presente, então ele se tornará a nova raiz. 
+        Se não estiver presente, o último nó folha acessado se tornará a nova raiz.
+        Se a chave da nova raiz não for igual a k, retorne a raiz, pois k não está presente.
+        Caso contrário, a chave k está presente.
+            Divida a árvore em duas árvores 
+            R1 = subárvore esquerda da raiz e
+            R2 = subárvore direita da raiz e exclua o nó raiz.
+            Se R1 for NULL: Retorne R2.
+            Caso contrário, 
+                Faça o splay da maior chave em R1.
+                Torne R2 o filho direito de R1 e retorne R1.
+    */
 }
 
 template <typename T>
