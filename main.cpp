@@ -8,7 +8,7 @@ using namespace std;
 // Testa algumas funções da arvore de busca.
 int main()
 {
-    int array[] = {10, 20, 30, 5, 15};
+    int array[] = {10, 2, 20, 34 , 30, 2, 5, 33, 15};
     int size = sizeof(array)/sizeof(array[0]);
 
     // Cria um SplayTree vazia

@@ -2,13 +2,17 @@
 #define SPLAY_H__
 
 #include "splay_node.h"
-
+/**
+ *  Tipo abstrato de dados para uma árvore Splay
+ *  
+ * 
+ */
 template <typename T>
 class SplayTree
 {   
 
     public:
-        SplayTree();
+        SplayTree();                     
         void           insert(T key);
         void           remove(T key);
         SplayNode<T>*  max();
@@ -28,6 +32,7 @@ class SplayTree
         void rotateRight(SplayNode<T> *node);
         void splay(SplayNode<T> *node);
         void clean(SplayNode<T> *node);
+        //SplayNode<T>* remove_key(SplayNode<T> *r, T key);
 
         // Ponteiro para o no raiz da arvore
         SplayNode<T> *root;
@@ -96,13 +101,12 @@ void SplayTree<T>::rotateRight(SplayNode<T> *y)
     x->parent = y->parent;
     if (y->parent == nullptr)
         root = x;
-    else if (y == y->parent->left)
-        y->parent->left = x;
-    else
+    else if (y == y->parent->right)
         y->parent->right = x;
+    else
+        y->parent->left = x;
     x->right = y;
     y->parent = x;
-
 }
 
 // Implemente a rotina de splay. 
@@ -129,10 +133,53 @@ void SplayTree<T>::splay(SplayNode<T> *x)
             Caso contrário:
                Rotacionar P para a esquerda e G para a direita: zig-zag Esquerta - Direita
     */
-    //TODO: Implemente a rotina de splay
-    //      O parâmetro node é o nó que deve ser splayado.
-    //     
- 
+
+    while(x->parent != nullptr)
+    {
+        if(x->parent == root)
+        {
+            if(x == x->parent->left)
+                rotateRight(x->parent);
+            else
+                rotateLeft(x->parent);
+        } 
+        else 
+        {
+            SplayNode<T> *p = x->parent;
+            SplayNode<T> *g = p->parent;
+            if(g == nullptr)
+            {
+                if(x == p->left)
+                    rotateRight(p);
+                else
+                    rotateLeft(p);
+            }
+            else
+            {
+                if(x == p->left && p == g->left)
+                {
+                    rotateRight(g);
+                    rotateRight(p);
+                }
+                else if(x == p->right && p == g->right)
+                {
+                    rotateLeft(g);
+                    rotateLeft(p);
+                }
+                else if(x == p->right && p == g->left)
+                {
+                    rotateLeft(p);
+                    rotateRight(g);
+                }
+                else
+                {
+                    rotateRight(p);
+                    rotateLeft(g);
+                }
+            }
+        }
+    }
+    //root = x;
 
     // fim da implementação da rotina de splay
 }
@@ -215,32 +262,62 @@ SplayNode<T>* SplayTree<T>::min()
 template <typename T>
 void SplayTree<T>::remove(T key)
 {
-     // TODO: Verifique a implementação da rotina de remoção
-     
-    SplayNode<T> *node = find(key);
-    if (node == nullptr)
-            return;
+    SplayNode<T> *r1;
+    SplayNode<T> *r2;
+/** 
+    Se Root for NULL: simplesmente retornamos a raiz.
+    Caso contrário, 
+        Se k estiver presente, então ele se tornará a nova raiz. 
+        Se não estiver presente, o último nó folha acessado se tornará a nova raiz.
+        Se a chave da nova raiz não for igual a k, retorne a raiz, pois k não está presente.
+        Caso contrário, a chave k está presente.
+            Divida a árvore em duas árvores 
+               R1 = subárvore esquerda da raiz e
+               R2 = subárvore direita da raiz e exclua o nó raiz.
+            Se R1 for NULL: Retorne R2.
+            Caso contrário, 
+                Faça o splay da maior chave em R1.
+                Torne R2 o filho direito de R1 e retorne R1.
+*/
 
-    if(node->key != key)
+    if (root == nullptr)
         return;
     
-   SplayNode<T>* r1 = node->left;
-   SplayNode<T>* r2 = node->right;
-   if(r1 == nullptr)
-        root = r2;
-    else
+    find(key);
+
+    if(root->key != key)
+        return;
+
+    r1 = root->left;
+    r2 = root->right;
+
+    if(r1) r1->parent = nullptr;
+    if(r2) r2->parent = nullptr;
+
+    // delete root
+    delete root;
+    root = nullptr;
+
+    if(r1 == nullptr)
     {
-
-        while(r1->right != nullptr)
-            r1 = r1->right;
-
-        splay(r1);
-        r1->right = r2;
-        if(r2 != nullptr)
-            r2->parent = r1;
-        root = r1;
+        root = r2;
+        if(root != nullptr)
+            root->parent = nullptr;
+        return;
     }
-    delete node;
+
+    SplayNode<T> *temp = r1;
+    while(temp->right != nullptr)
+        temp = temp->right;
+
+    splay(temp);
+    root = temp;
+    root->right = r2;
+    if(root->right != nullptr)
+        root->right->parent = root;
+    
+    root->parent = nullptr; 
+
 }
 
 template <typename T>
@@ -306,6 +383,7 @@ SplayTree<T>::~SplayTree()
     clean(root);
     root = nullptr;
 }
+
 
 
 #endif /* SPLAY_H__ */
