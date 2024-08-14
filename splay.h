@@ -2,13 +2,17 @@
 #define SPLAY_H__
 
 #include "splay_node.h"
-
+/**
+ *  Tipo abstrato de dados para uma árvore Splay
+ *  
+ * 
+ */
 template <typename T>
 class SplayTree
 {   
 
     public:
-        SplayTree();
+        SplayTree();                     
         void           insert(T key);
         void           remove(T key);
         SplayNode<T>*  max();
@@ -28,6 +32,7 @@ class SplayTree
         void rotateRight(SplayNode<T> *node);
         void splay(SplayNode<T> *node);
         void clean(SplayNode<T> *node);
+        //SplayNode<T>* remove_key(SplayNode<T> *r, T key);
 
         // Ponteiro para o no raiz da arvore
         SplayNode<T> *root;
@@ -277,6 +282,7 @@ SplayTree<T>::~SplayTree()
     clean(root);
     root = nullptr;
 }
+
 
 
 #endif /* SPLAY_H__ */
